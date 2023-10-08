@@ -1,0 +1,10 @@
+# Site Settings
+locale                   : "ja-JP"
+title                    : "Python関係の私的な和訳"
+name                     : "poti-san"
+description              : "趣味プログラマーによるPython関係の私的な和訳です。"
+url                      : "https://poti-san.github.io"
+repository               : "poti-san.github.io/my-py-docs-ja"
+remote_theme             : "just-the-docs/just-the-docs"
+plugins:
+  - jekyll-remote-theme
