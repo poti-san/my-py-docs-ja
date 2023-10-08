@@ -17,6 +17,7 @@ title: Python関係の私的な和訳
   - 原版は[MITライセンス](https://github.com/enthought/comtypes)（2023/10/8時点）であり、以下の翻訳もこれに従います。
   - [アーカイブはGitHubからダウンロード](https://github.com/enthought/comtypes/releases/tag/1.2.0)できます。
   - 翻訳文のリンクはいくつか未翻訳でリンク切れです。
+  - GitHub Pagesではシンタックスハイライトにpyconが使えないため、すべてpythonに変換しています。
 - 翻訳
   - [ドキュメントのインデックス（docs/source/index.rst）](comtypes1.2.0/docs/index.md)
 
