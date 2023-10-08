@@ -9,7 +9,7 @@ title: Python関係の私的な和訳
 
 - 趣味のプログラマーによるPython言語関係の翻訳集です。GitHubも翻訳も手探りですが、誰かの助けになったら幸いです。
 - ちょこちょこ修正する予定です。おかしな点があればお気軽にご指摘ください。
-- [R係の私的な和訳](https://poti-san.github.io/my-r-docs-ja/)の姉妹版です。
+- [R関係の私的な和訳](https://poti-san.github.io/my-r-docs-ja/)の姉妹版です。
 
 ## comtypes 1.2.0
 
