@@ -65,7 +65,7 @@ wmi = CoGetObject("winmgmts:")
 
 `MSScriptControl.ScriptControl`はMicrosoftスクリプトエンジンのProgIDです。これは興味深いCOMオブジェクトであり、JScriptやVBScriptのプログラムを実行できます[こちら](scriptcontrol.html)で以下のコマンドの完全な出力を確認できます。
 
-```pycon
+```py
 >>> from comtypes.client import CreateObject
 >>> engine = CreateObject("MSScriptControl.ScriptControl")
 >>> help(engine)
@@ -87,7 +87,7 @@ COMプロパティにはいくつかの難題があります。プロパティ�
 
 引数の無いプロパティは通常の方法でアクセスできます。以下の例はInternet Explorerの`Visible`プロパティのデモです。
 
-```pycon
+```py
 >>> ie = CreateObject("InternetExplorer.Application")
 >>> print ie.Visible
 False
@@ -99,7 +99,7 @@ False
 
 引数のあるプロパティは添字表記でアクセスできます。以下の例はExcelを開始して、新しいワークブックを作り、`xlRangeValueDefault`書式のあるセルの内容にアクセスします（Office 2003で動作確認しています）。
 
-```pycon
+```py
 >>> xl = CreateObject("Excel.Application")
 >>> xl.Workbooks.Add()
 >>> from comtypes.gen.Excel import xlRangeValueDefault
@@ -115,7 +115,7 @@ Excelタイプライブラリー（または*comtypes.gen*で作成されたラ�
 
 不幸にもPythonでは引数のない添字表記は使えません。
 
-```pycon
+```py
 >>> xl.Range["A1", "C1"].Value[] = (10,"20",31.4)
   File "<stdin>", line 1
     xl.Range["A1", "C1"].Value[] = (10,"20",31.4)
@@ -131,7 +131,7 @@ SyntaxError: invalid syntax
 
 従って、**comtypes**はこれらのプロパティにアクセスするいくつかの方法を提供すべきです。引数を渡さずに名前付きプロパティを取得するには、プロパティの呼び出しが使えます。
 
-```pycon
+```py
 >>> print xl.Range["A1", "C1"].Value()
 (10, "20", 31.4)
 >>>
@@ -139,7 +139,7 @@ SyntaxError: invalid syntax
 
 空のスライスまたはタプルを添字に使っても良いです。
 
-```pycon
+```py
 >>> print xl.Range["A1", "C1"].Value[:]
 (10, "20", 31.4)
 >>> print xl.Range["A1", "C1"].Value[()]
@@ -149,7 +149,7 @@ SyntaxError: invalid syntax
 
 引数を渡さずに名前付きプロパティを設定するには、空のスライスまたはタプルが使えます。
 
-```pycon
+```py
 >>> xl.Range["A1", "C1"].Value[:] = (3, 2, 1)
 >>> xl.Range["A1", "C1"].Value[()] = (1, 2, 3)
 >>>
@@ -305,7 +305,7 @@ Control+Cを押すと`KeyboardError`例外が発生して関数は即座に終�
 
 ここではExcelからイベントを検索・受信する方法をデモします。
 
-```pycon
+```py
 >>> from comtypes.client import CreateObject
 >>> xl = CreateObject("Excel.Application")
 >>> xl.Visible = True
@@ -318,7 +318,7 @@ Control+Cを押すと`KeyboardError`例外が発生して関数は即座に終�
 
 `ShowEvents`を呼び出してExcelの送信するイベントに接続できます。`ShowEvents`は最初に`_Application`オブジェクトに存在するイベントを列挙します。
 
-```pycon
+```py
 >>> from comtypes.client import ShowEvents
 >>> connection = ShowEvents(xl)
 # event found: AppEvents_WorkbookSync
@@ -359,7 +359,7 @@ Control+Cを押すと`KeyboardError`例外が発生して関数は即座に終�
 
 COMイベントの正確な受信にはメッセージループの実行が重要です。`PumpEvents()`関数は一定時間だけそれを実行します。以下はこの関数の呼び出して、その間にExcelワークシートをインタラクティブに開いたときに起きた内容です。`comtypes`はイベントを実行時の引数と共に出力します。
 
-```pycon
+```py
 >>> from comtypes.client import PumpEvents
 >>> PumpEvents(30)
 Event AppEvents_WorkbookOpen(None, <POINTER(_Workbook) ptr=...>)
@@ -370,7 +370,7 @@ Event AppEvents_WindowActivate(None, <POINTER(Window) ptr=...>, <POINTER(_Workbo
 
 最初の引数は常に`this`ポインターで、`comtypes`の内部事情により常に`None`が渡されます。他の引数はイベントに依存します。接続の削除には単に`connection`変数を削除します。これはPythonのガベージコレクタを呼び出して接続を即座に削除するために必要です。 削除するとExcelのイベントは受信されません。
 
-```pycon
+```py
 >>> del connection
 >>> import gc; gc.collect()
 123
@@ -381,7 +381,7 @@ Event AppEvents_WindowActivate(None, <POINTER(Window) ptr=...>, <POINTER(_Workbo
 
 次のコードは`AppEvents_WorkbookOpen`イベントを処理するクラスを定義して、そのクラスのインスタンスを作成して、`GetEvents()`関数の2番目の引数に渡しています。
 
-```pycon
+```py
 >>> from comtypes.client import GetEvents
 >>> class EventSink(object):
 ...     def AppEvents_WorkbookOpen(self, this, workbook):
@@ -437,7 +437,7 @@ WorkbookOpened <POINTER(_Workbook) ptr=0x291944 at 1853120>
 
 `GetModule`関数を使ってInternet Explorerのタイプライブラリーラッパーモジュールを作成するいくつかの方法を紹介します。
 
-```pycon
+```py
 >>> from comtypes.client import GetModule
 >>> GetModule("shdocvw.dll")
 >>> GetModule(["{EAB22AC0-30C1-11CF-A7EB-0000C05BAE0B}", 1, 1)
@@ -446,7 +446,7 @@ WorkbookOpened <POINTER(_Workbook) ptr=0x291944 at 1853120>
 
 次のコード断片は実行するとInternet Explorerタイプライブラリーラッパーモジュールを自動作成します。スクリプトがpy2exeで凍結されるときはそのモジュールを実行ファイルに含めます。
 
-```pycon
+```py
 >>> import sys
 >>> if not hasattr(sys, "frozen"):
 >>>     from comtypes.client import GetModule
